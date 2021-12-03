@@ -19,7 +19,7 @@
         app:layout_constraintHorizontal_bias="0.6"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.35000002" />
+        app:layout_constraintVertical_bias="0.30000002" />
 
     <TextView
         android:id="@+id/Signup"
@@ -39,8 +39,8 @@
 
     <androidx.cardview.widget.CardView
         android:id="@+id/cardView"
-        android:layout_width="150dp"
-        android:layout_height="150dp"
+        android:layout_width="110dp"
+        android:layout_height="110dp"
         app:cardBackgroundColor="@color/grey"
         app:cardCornerRadius="80dp"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -48,12 +48,12 @@
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.24000001">
+        app:layout_constraintVertical_bias="0.20000001">
 
         <ImageView
             android:id="@+id/imageView2"
-            android:layout_width="120dp"
-            android:layout_height="120dp"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
             android:layout_gravity="center"
             android:adjustViewBounds="false"
             app:srcCompat="@mipmap/food_icon_foreground"
@@ -91,8 +91,10 @@
             app:cardUseCompatPadding="true">
 
             <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/emailInput"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                app:errorEnabled="true"
                 app:boxBackgroundColor="@color/white">
 
                 <com.google.android.material.textfield.TextInputEditText
@@ -121,11 +123,14 @@
             app:cardUseCompatPadding="true">
 
             <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/passwordInput"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                app:errorEnabled="true"
                 app:boxBackgroundColor="@color/white">
 
                 <com.google.android.material.textfield.TextInputEditText
+                    android:inputType="textPassword"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     app:errorEnabled="true"
@@ -152,11 +157,14 @@
             app:cardUseCompatPadding="true">
 
             <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/password2Input"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                app:errorEnabled="true"
                 app:boxBackgroundColor="@color/white">
 
                 <com.google.android.material.textfield.TextInputEditText
+                    android:inputType="textPassword"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     app:errorEnabled="true"
@@ -183,7 +191,7 @@
             app:cardUseCompatPadding="true">
 
             <DatePicker
-                android:id="@+id/datePicker1"
+                android:id="@+id/datePicker"
                 android:layout_width="277dp"
                 android:layout_height="wrap_content"
                 android:calendarViewShown="false"
@@ -192,6 +200,7 @@
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/register_button"
+            android:onClick="registerButtonOnClick"
             android:layout_width="match_parent"
             android:layout_height="60dp"
             android:layout_marginLeft="10dp"

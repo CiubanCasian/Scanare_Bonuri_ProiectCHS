@@ -20,18 +20,18 @@
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.120000005"/>
+        app:layout_constraintVertical_bias="0.120000005" />
 
     <ImageView
         android:id="@+id/imageView2"
-        android:layout_width="150dp"
-        android:layout_height="150dp"
+        android:layout_width="130dp"
+        android:layout_height="130dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.3"
+        app:layout_constraintVertical_bias="0.25"
         app:srcCompat="@drawable/diet"
         tools:ignore="ContentDescription" />
 
@@ -80,6 +80,7 @@
             app:cardUseCompatPadding="true">
 
             <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/emailInput"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 app:boxBackgroundColor="@color/white">
@@ -111,6 +112,7 @@
             app:cardUseCompatPadding="true">
 
             <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/passwordInput"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 app:boxBackgroundColor="@color/white">
@@ -138,13 +140,14 @@
             tools:ignore="RtlHardcoded" />
 
         <com.google.android.material.button.MaterialButton
-            android:id="@+id/button"
+            android:id="@+id/loginButton"
             android:layout_width="match_parent"
             android:layout_height="50dp"
-            android:layout_marginTop="35dp"
             android:layout_marginLeft="10dp"
+            android:layout_marginTop="35dp"
             android:layout_marginRight="10dp"
             android:fontFamily="@font/lato"
+            android:onClick="onClickLogin"
             android:text="@string/login"
             android:textColor="@color/white"
             android:textStyle="bold"
