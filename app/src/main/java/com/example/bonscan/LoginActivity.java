@@ -6,7 +6,9 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -28,30 +30,46 @@ public class LoginActivity extends AppCompatActivity {
         mAuth = FirebaseAuth.getInstance();
     }
 
-    public void onClickLogin(View view){
+    public void onClickLogin(View view) {
         TextInputLayout emailInputLayout = findViewById(R.id.emailInput);
-        String email = String.valueOf(emailInputLayout.getEditText().getText());
+        EditText emailText = emailInputLayout.getEditText();
+        String email = emailText.getText().toString();
+
+        if (!isEmailValid(email)) {
+            emailInputLayout.setError("Invalid email format");
+            Log.i("Messages", emailInputLayout.getError().toString());
+        } else {
+            emailInputLayout.setError(null);
+        }
 
         TextInputLayout passwordInputLayout = findViewById(R.id.passwordInput);
         String password = String.valueOf(passwordInputLayout.getEditText().getText());
 
+        if (password.length() < 6) {
+            passwordInputLayout.setError("Password is too short");
+        } else {
+            passwordInputLayout.setError(null);
+        }
+
         signIn(email, password);
     }
 
-    private void signIn(String email,String password){
+    private void signIn(String email, String password) {
         mAuth.signInWithEmailAndPassword(email, password)
                 .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
-                            FirebaseUser user = mAuth.getCurrentUser();
+                            Toast successfullToast = Toast.makeText(getApplicationContext(), "Authentication successfull", Toast.LENGTH_SHORT);
+                            successfullToast.show();
                         } else {
-                            Toast.makeText(LoginActivity.this, "Authentication failed.",
-                                    Toast.LENGTH_SHORT).show();
+                            Toast failToast = Toast.makeText(getApplicationContext(), "Authentication failed", Toast.LENGTH_SHORT);
+                            failToast.show();
                         }
                     }
                 });
     }
+
     public void onClickRegister(View view) {
         Intent intent = new Intent(this, RegisterActivity.class);
         startActivity(intent);
@@ -62,6 +80,11 @@ public class LoginActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-      //Disable back button
+        //Disable back button
     }
+
+    private boolean isEmailValid(CharSequence email) {
+        return android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches();
+    }
+
 }

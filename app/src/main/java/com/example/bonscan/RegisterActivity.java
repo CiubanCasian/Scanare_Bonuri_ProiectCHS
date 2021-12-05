@@ -3,9 +3,11 @@ package com.example.bonscan;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.DatePicker;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -43,12 +45,9 @@ public class RegisterActivity extends AppCompatActivity {
         TextInputLayout password2InputLayout = findViewById(R.id.password2Input);
         String password2 = String.valueOf(password2InputLayout.getEditText().getText());
 
-        if(password.equals(password2)) {
-            createAccount(email, password);
-        }
     }
 
-    private void createAccount(String email, String password){
+    private void createAccount(String email, String password) {
         mAuth.createUserWithEmailAndPassword(email, password)
                 .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
                     @Override
@@ -56,13 +55,18 @@ public class RegisterActivity extends AppCompatActivity {
                         if (task.isSuccessful()) {
                             FirebaseUser user = mAuth.getCurrentUser();
                         } else {
-                            Log.w( "createUserWithEmail:failure", task.getException());
+                            Log.w("createUser:failure", task.getException());
                             Toast.makeText(RegisterActivity.this, "Authentication failed.",
                                     Toast.LENGTH_SHORT).show();
                         }
 
                     }
                 });
+    }
+
+    public void onClickLogin(View view) {
+        Intent intent = new Intent(this, LoginActivity.class);
+        startActivity(intent);
     }
 
     //TODO: password min 6 characters error!
