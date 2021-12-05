@@ -10,6 +10,7 @@
     <string name="confirm_password">Confirm Password</string>
     <string name="register">Register</string>
     <string name="birthdate">Date of birth</string>
+    <string name="favorite_recipes">Favorite recipes</string>
     <string name="alreadyRegistered">"Already registered? Go sign in "</string>
     <string name="email_hint">bon_scan@yahoo.com</string>
 </resources>
