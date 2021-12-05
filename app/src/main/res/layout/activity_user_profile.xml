@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/orange_light"
+    android:background="@color/light_orange"
     tools:context=".UserProfileActivity">
 
     <View
@@ -32,7 +32,7 @@
         android:id="@+id/Logout"
         android:layout_width="200dp"
         android:layout_height="wrap_content"
-        android:background="@color/orange"
+        android:background="@drawable/button_bg"
         android:text="Log out"
         android:textColor="@color/white"
         android:textAllCaps="false"
@@ -44,22 +44,23 @@
         app:layout_constraintVertical_bias="0.9"
         tools:ignore="TextContrastCheck" />
 
-    <Button
+    <TextView
         android:id="@+id/FavotiteRecipes"
         android:layout_width="300dp"
         android:layout_height="70dp"
-        android:background="@color/white"
+        android:background="@drawable/button_bg"
         android:foreground="@drawable/heart"
         android:foregroundGravity="bottom|center"
         android:text="@string/favorite_recipes"
         android:textAllCaps="false"
-        android:textColor="@color/green_dark"
+        android:textColor="@color/black"
         app:layout_constraintBottom_toTopOf="@+id/Logout"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.497"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/ProfileImage"
-        app:layout_constraintVertical_bias="0.136"/>
+        app:layout_constraintVertical_bias="0.136"
+        android:gravity="center" />
 
     <ScrollView
         android:layout_width="match_parent"

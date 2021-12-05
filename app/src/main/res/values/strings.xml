@@ -10,4 +10,5 @@
     <string name="confirm_password">Confirm Password</string>
     <string name="register">Register</string>
     <string name="birthdate">Date of birth</string>
+    <string name="favorite_recipes">Favorite recipes</string>
 </resources>
