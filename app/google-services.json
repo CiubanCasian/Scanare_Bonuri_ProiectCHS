@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "276839032821",
+    "project_id": "bonscan-50764",
+    "storage_bucket": "bonscan-50764.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:276839032821:android:6765dbb91a3261d31722bc",
+        "android_client_info": {
+          "package_name": "com.example.bonscan"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "276839032821-ho4mh0vvnr6u59gqckdntof7k0i8flf8.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCfNcACFGFAePotv3_UYZzp0zcrQ1FmdUA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "276839032821-ho4mh0vvnr6u59gqckdntof7k0i8flf8.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

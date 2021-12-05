@@ -1,4 +1,13 @@
 <resources>
     <string name="app_name">BonScan</string>
-    <string name="favorite_recipes">Favorite recipes</string>
+    <string name="notRegistered">Not registered yet?</string>
+    <string name="log_in">Log In</string>
+    <string name="email">Email</string>
+    <string name="password">Password</string>
+    <string name="forgot_password">Forgot password ?</string>
+    <string name="login">Login</string>
+    <string name="sign_up">Sign up</string>
+    <string name="confirm_password">Confirm Password</string>
+    <string name="register">Register</string>
+    <string name="birthdate">Date of birth</string>
 </resources>
