@@ -10,7 +10,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.BonScan">
         <activity
-            android:name=".Home"
+            android:name=".HomeActivity"
             android:exported="false"
             android:label="@string/title_activity_home"
             android:theme="@style/Theme.BonScan.NoActionBar" />
