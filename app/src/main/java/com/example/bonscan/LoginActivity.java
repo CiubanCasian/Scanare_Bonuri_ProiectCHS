@@ -52,6 +52,9 @@ public class LoginActivity extends AppCompatActivity {
         }
 
         signIn(email, password);
+
+        Intent intent = new Intent(this, HomeActivity.class);
+        startActivity(intent);
     }
 
     private void signIn(String email, String password) {
@@ -59,10 +62,7 @@ public class LoginActivity extends AppCompatActivity {
                 .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
-                        if (task.isSuccessful()) {
-                            Toast successfullToast = Toast.makeText(getApplicationContext(), "Authentication successfull", Toast.LENGTH_SHORT);
-                            successfullToast.show();
-                        } else {
+                        if (!task.isSuccessful()) {
                             Toast failToast = Toast.makeText(getApplicationContext(), "Authentication failed", Toast.LENGTH_SHORT);
                             failToast.show();
                         }
