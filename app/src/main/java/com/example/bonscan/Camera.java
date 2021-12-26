@@ -1,6 +1,14 @@
 package com.example.bonscan;
 
+import android.Manifest;
+import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.ContentValues;
+import android.content.Context;
+import android.content.pm.PackageManager;
+import android.os.Build;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -15,17 +23,19 @@ import androidx.camera.core.ImageProxy;
 import androidx.camera.core.Preview;
 import androidx.camera.lifecycle.ProcessCameraProvider;
 import androidx.camera.view.PreviewView;
+import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
 import com.google.common.util.concurrent.ListenableFuture;
 
-import java.io.File;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Executor;
 
 public class Camera extends AppCompatActivity implements ImageAnalysis.Analyzer, View.OnClickListener {
 
     private ListenableFuture<ProcessCameraProvider> cameraProviderFuture;
+
+    public static final int MY_PERMISSIONS_REQUEST_WRITE_EXTERNAL_STORAGE = 123;
 
     private ImageCapture imageCapture;
     private PreviewView previewView;
@@ -57,11 +67,12 @@ public class Camera extends AppCompatActivity implements ImageAnalysis.Analyzer,
     }
 
     private void startCameraX(ProcessCameraProvider cameraProvider) {
-
         cameraProvider.unbindAll();
+
         CameraSelector cameraSelector = new CameraSelector.Builder()
                 .requireLensFacing(CameraSelector.LENS_FACING_BACK)
                 .build();
+
         Preview preview = new Preview.Builder()
                 .build();
         preview.setSurfaceProvider(previewView.getSurfaceProvider());
@@ -92,21 +103,74 @@ public class Camera extends AppCompatActivity implements ImageAnalysis.Analyzer,
 
     @Override
     public void onClick(View view) {
-        ImageCapture.OutputFileOptions outputFileOptions =
-                new ImageCapture.OutputFileOptions.Builder(new File("src/main/res/captures")).build();
-        imageCapture.takePicture(outputFileOptions, getExecutor(),
-                new ImageCapture.OnImageSavedCallback() {
-                    @Override
-                    public void onImageSaved(ImageCapture.OutputFileResults outputFileResults) {
-                        // insert your code here.
-                    }
+        long timestamp = System.currentTimeMillis();
 
-                    @Override
-                    public void onError(ImageCaptureException error) {
-                        // insert your code here.
+        ContentValues contentValues = new ContentValues();
+        contentValues.put(MediaStore.MediaColumns.DISPLAY_NAME, timestamp);
+        contentValues.put(MediaStore.MediaColumns.MIME_TYPE, "image/jpeg");
+
+        if (checkPermissionREAD_EXTERNAL_STORAGE(this)) {
+            imageCapture.takePicture(
+                    new ImageCapture.OutputFileOptions.Builder(getContentResolver(),
+                            MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
+                            contentValues).build(),
+                    getExecutor(),
+                    new ImageCapture.OnImageSavedCallback() {
+                        @Override
+                        public void onImageSaved(@NonNull ImageCapture.OutputFileResults outputFileResults) {
+                            Log.i("SUCCESS", "Capture success");
+                        }
+
+                        @Override
+                        public void onError(@NonNull ImageCaptureException exception) {
+                            Log.i("FAIL", "Capture failed with message:  " + exception.getMessage());
+                        }
                     }
+            );
+        }
+    }
+
+    private boolean checkPermissionREAD_EXTERNAL_STORAGE(
+            final Context context) {
+        int currentAPIVersion = Build.VERSION.SDK_INT;
+        if (currentAPIVersion >= android.os.Build.VERSION_CODES.M) {
+            if (ContextCompat.checkSelfPermission(context,
+                    Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+                if (ActivityCompat.shouldShowRequestPermissionRationale(
+                        (Activity) context,
+                        Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
+                    showDialog("External storage", context,
+                            Manifest.permission.WRITE_EXTERNAL_STORAGE);
+
+                } else {
+                    ActivityCompat
+                            .requestPermissions(
+                                    (Activity) context,
+                                    new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},
+                                    MY_PERMISSIONS_REQUEST_WRITE_EXTERNAL_STORAGE);
                 }
-        );
+                return false;
+            } else {
+                return true;
+            }
+
+        } else {
+            return true;
+        }
+    }
+
+    public void showDialog(final String msg, final Context context,
+                           final String permission) {
+        AlertDialog.Builder alertBuilder = new AlertDialog.Builder(context);
+        alertBuilder.setCancelable(true);
+        alertBuilder.setTitle("Permission necessary");
+        alertBuilder.setMessage(msg + " permission is necessary");
+        alertBuilder.setPositiveButton(android.R.string.yes,
+                (dialog, which) -> ActivityCompat.requestPermissions((Activity) context,
+                        new String[]{permission},
+                        MY_PERMISSIONS_REQUEST_WRITE_EXTERNAL_STORAGE));
+        AlertDialog alert = alertBuilder.create();
+        alert.show();
     }
 
 }
