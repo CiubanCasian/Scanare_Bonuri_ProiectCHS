@@ -63,6 +63,8 @@ public class RegisterActivity extends AppCompatActivity {
             password2InputLayout.setError("Passwords do not match.");
         }
 
+        Intent intent = new Intent(this, HomeActivity.class);
+        startActivity(intent);
     }
 
     private void createAccount(String email, String password) {
