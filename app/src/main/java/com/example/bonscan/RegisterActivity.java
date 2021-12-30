@@ -63,8 +63,6 @@ public class RegisterActivity extends AppCompatActivity {
             password2InputLayout.setError("Passwords do not match.");
         }
 
-        Intent intent = new Intent(this, HomeActivity.class);
-        startActivity(intent);
     }
 
     private void createAccount(String email, String password) {
@@ -75,6 +73,9 @@ public class RegisterActivity extends AppCompatActivity {
                         if (task.isSuccessful()) {
                             Toast successfullToast = Toast.makeText(getApplicationContext(), "Register successfull", Toast.LENGTH_SHORT);
                             successfullToast.show();
+
+                            Intent intent = new Intent(RegisterActivity.this, HomeActivity.class);
+                            startActivity(intent);
                         } else {
                             Log.w("createUser:failure", task.getException());
                             Toast failToast = Toast.makeText(getApplicationContext(), "Register failed", Toast.LENGTH_SHORT);
