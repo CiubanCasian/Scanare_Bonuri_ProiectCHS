@@ -47,7 +47,8 @@ public class LoginActivity extends AppCompatActivity {
                             Toast successfullToast = Toast.makeText(getApplicationContext(), "Login successfull", Toast.LENGTH_SHORT);
                             successfullToast.show();
                             FirebaseUser user = mAuth.getCurrentUser();
-                            goToUserProfile(user);
+                            //goToUserProfile(user);
+                            goToHome(user);
                         } else {
                             Log.w("singInUser:failure", task.getException());
                             Toast failToast = Toast.makeText(getApplicationContext(), "Login failed", Toast.LENGTH_SHORT);
@@ -61,6 +62,14 @@ public class LoginActivity extends AppCompatActivity {
     private void goToUserProfile(FirebaseUser user) {
         if (user != null) {
             Intent intent = new Intent(LoginActivity.this, UserProfileActivity.class);
+            startActivity(intent);
+        }
+
+    }
+
+    private void goToHome(FirebaseUser user) {
+        if (user != null) {
+            Intent intent = new Intent(LoginActivity.this, HomeActivity.class);
             startActivity(intent);
         }
 
