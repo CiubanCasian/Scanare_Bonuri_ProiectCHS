@@ -109,7 +109,7 @@ public class Camera extends AppCompatActivity implements ImageAnalysis.Analyzer,
         contentValues.put(MediaStore.MediaColumns.DISPLAY_NAME, timestamp);
         contentValues.put(MediaStore.MediaColumns.MIME_TYPE, "image/jpeg");
 
-        if (checkPermissionREAD_EXTERNAL_STORAGE(this)) {
+        if (checkPermission_WRITE_EXTERNAL_STORAGE(this)) {
             imageCapture.takePicture(
                     new ImageCapture.OutputFileOptions.Builder(getContentResolver(),
                             MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
@@ -130,7 +130,7 @@ public class Camera extends AppCompatActivity implements ImageAnalysis.Analyzer,
         }
     }
 
-    private boolean checkPermissionREAD_EXTERNAL_STORAGE(
+    private boolean checkPermission_WRITE_EXTERNAL_STORAGE(
             final Context context) {
         int currentAPIVersion = Build.VERSION.SDK_INT;
         if (currentAPIVersion >= android.os.Build.VERSION_CODES.M) {
