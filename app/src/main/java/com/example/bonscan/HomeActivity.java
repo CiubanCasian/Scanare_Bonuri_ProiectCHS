@@ -5,6 +5,8 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.net.Uri;
+import android.content.ActivityNotFoundException;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -17,12 +19,17 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.storage.FirebaseStorage;
+import android.provider.MediaStore;
+import android.view.View;
+import android.widget.Button;
 
 public class HomeActivity extends AppCompatActivity {
 
     private FirebaseUser user;
     private FirebaseStorage storage;
     private ImageView profileImage;
+
+    private Button scanButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -74,4 +81,10 @@ public class HomeActivity extends AppCompatActivity {
         }
 
     }
+
+    public void onClickScan(View view) {
+        Intent intent = new Intent(this, Camera.class);
+        startActivity(intent);
+    }
+
 }
