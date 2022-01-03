@@ -60,9 +60,12 @@ public class LoginActivity extends AppCompatActivity {
         mAuth.signInWithEmailAndPassword(email, password)
                 .addOnCompleteListener(this, task -> {
                     if (task.isSuccessful()) {
-                        Intent intent = new Intent(this, HomeActivity.class);
-                        startActivity(intent);
+                        Toast successfullToast = Toast.makeText(getApplicationContext(), "Login successfull", Toast.LENGTH_SHORT);
+                        successfullToast.show();
+                        FirebaseUser user = mAuth.getCurrentUser();
+                        goToHome(user);
                     } else {
+                        Log.w("singInUser:failure", task.getException());
                         Toast failToast = Toast.makeText(getApplicationContext(), "Authentication failed", Toast.LENGTH_SHORT);
                         failToast.show();
                     }
