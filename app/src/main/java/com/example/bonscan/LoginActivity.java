@@ -1,16 +1,23 @@
 package com.example.bonscan;
 
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.appcompat.app.AppCompatActivity;
-
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.textfield.TextInputLayout;
+import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 
 public class LoginActivity extends AppCompatActivity {
 
@@ -60,6 +67,22 @@ public class LoginActivity extends AppCompatActivity {
                         failToast.show();
                     }
                 });
+    }
+
+    private void goToUserProfile(FirebaseUser user) {
+        if (user != null) {
+            Intent intent = new Intent(LoginActivity.this, UserProfileActivity.class);
+            startActivity(intent);
+        }
+
+    }
+
+    private void goToHome(FirebaseUser user) {
+        if (user != null) {
+            Intent intent = new Intent(LoginActivity.this, HomeActivity.class);
+            startActivity(intent);
+        }
+
     }
 
     public void onClickRegister(View view) {
