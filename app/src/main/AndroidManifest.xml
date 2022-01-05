@@ -20,6 +20,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.BonScan">
         <activity
+            android:name=".RecipiesActivity"
+            android:exported="true" />
+        <activity
             android:name=".CapturesView"
             android:exported="false" />
         <activity
