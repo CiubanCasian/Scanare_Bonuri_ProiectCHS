@@ -5,6 +5,7 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.ContentValues;
 import android.content.Context;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
@@ -128,6 +129,8 @@ public class Camera extends AppCompatActivity implements ImageAnalysis.Analyzer,
                     }
             );
         }
+        Intent intent = new Intent(this, CapturesView.class);
+        startActivity(intent);
     }
 
     private boolean checkPermission_WRITE_EXTERNAL_STORAGE(
