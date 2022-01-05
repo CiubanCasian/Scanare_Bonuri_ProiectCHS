@@ -1,15 +1,11 @@
 package com.example.bonscan;
 
-import android.Manifest;
-import android.app.Activity;
-import android.app.AlertDialog;
-import android.content.ContentValues;
-import android.content.Context;
+import android.annotation.SuppressLint;
 import android.content.Intent;
-import android.content.pm.PackageManager;
-import android.os.Build;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.media.Image;
 import android.os.Bundle;
-import android.provider.MediaStore;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -24,11 +20,13 @@ import androidx.camera.core.ImageProxy;
 import androidx.camera.core.Preview;
 import androidx.camera.lifecycle.ProcessCameraProvider;
 import androidx.camera.view.PreviewView;
-import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
 import com.google.common.util.concurrent.ListenableFuture;
 
+import java.io.ByteArrayOutputStream;
+import java.io.OutputStream;
+import java.nio.ByteBuffer;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Executor;
 
@@ -104,76 +102,36 @@ public class Camera extends AppCompatActivity implements ImageAnalysis.Analyzer,
 
     @Override
     public void onClick(View view) {
-        long timestamp = System.currentTimeMillis();
 
-        ContentValues contentValues = new ContentValues();
-        contentValues.put(MediaStore.MediaColumns.DISPLAY_NAME, timestamp);
-        contentValues.put(MediaStore.MediaColumns.MIME_TYPE, "image/jpeg");
-
-        if (checkPermission_WRITE_EXTERNAL_STORAGE(this)) {
-            imageCapture.takePicture(
-                    new ImageCapture.OutputFileOptions.Builder(getContentResolver(),
-                            MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
-                            contentValues).build(),
-                    getExecutor(),
-                    new ImageCapture.OnImageSavedCallback() {
-                        @Override
-                        public void onImageSaved(@NonNull ImageCapture.OutputFileResults outputFileResults) {
-                            Log.i("SUCCESS", "Capture success");
-                        }
-
-                        @Override
-                        public void onError(@NonNull ImageCaptureException exception) {
-                            Log.i("FAIL", "Capture failed with message:  " + exception.getMessage());
-                        }
+        imageCapture.takePicture(
+                getExecutor(),
+                new ImageCapture.OnImageCapturedCallback() {
+                    @Override
+                    public void onCaptureSuccess(@NonNull ImageProxy imageProxy) {
+                        Log.i("SUCCESS", "Capture success");
+                        sendImageToCaptureView(imageProxy);
                     }
-            );
-        }
-        Intent intent = new Intent(this, CapturesView.class);
-        startActivity(intent);
-    }
 
-    private boolean checkPermission_WRITE_EXTERNAL_STORAGE(
-            final Context context) {
-        int currentAPIVersion = Build.VERSION.SDK_INT;
-        if (currentAPIVersion >= android.os.Build.VERSION_CODES.M) {
-            if (ContextCompat.checkSelfPermission(context,
-                    Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
-                if (ActivityCompat.shouldShowRequestPermissionRationale(
-                        (Activity) context,
-                        Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
-                    showDialog("External storage", context,
-                            Manifest.permission.WRITE_EXTERNAL_STORAGE);
-
-                } else {
-                    ActivityCompat
-                            .requestPermissions(
-                                    (Activity) context,
-                                    new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},
-                                    MY_PERMISSIONS_REQUEST_WRITE_EXTERNAL_STORAGE);
+                    @Override
+                    public void onError(@NonNull ImageCaptureException exception) {
+                        Log.i("FAIL", "Capture failed with message:  " + exception.getMessage());
+                    }
                 }
-                return false;
-            } else {
-                return true;
-            }
-
-        } else {
-            return true;
-        }
+        );
     }
 
-    public void showDialog(final String msg, final Context context,
-                           final String permission) {
-        AlertDialog.Builder alertBuilder = new AlertDialog.Builder(context);
-        alertBuilder.setCancelable(true);
-        alertBuilder.setTitle("Permission necessary");
-        alertBuilder.setMessage(msg + " permission is necessary");
-        alertBuilder.setPositiveButton(android.R.string.yes,
-                (dialog, which) -> ActivityCompat.requestPermissions((Activity) context,
-                        new String[]{permission},
-                        MY_PERMISSIONS_REQUEST_WRITE_EXTERNAL_STORAGE));
-        AlertDialog alert = alertBuilder.create();
-        alert.show();
+    private void sendImageToCaptureView(@NonNull ImageProxy imageProxy) {
+        Intent intent = new Intent(getApplicationContext(), CapturesView.class);
+        @SuppressLint("UnsafeOptInUsageError") Image image = imageProxy.getImage();
+        assert image != null;
+        ByteBuffer buffer = image.getPlanes()[0].getBuffer();
+        byte[] bytes = new byte[buffer.remaining()];
+        buffer.get(bytes);
+        Bitmap myBitmap = BitmapFactory.decodeByteArray(bytes, 0, bytes.length, null);
+        ByteArrayOutputStream bs = new ByteArrayOutputStream();
+        myBitmap.compress(Bitmap.CompressFormat.JPEG, 50, bs);
+        intent.putExtra("byteArray", bs.toByteArray());
+        startActivity(intent);
     }
 
 }
