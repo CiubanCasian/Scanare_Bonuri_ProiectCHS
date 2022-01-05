@@ -1,6 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     package="com.example.bonscan">
+
+    <uses-permission android:name="android.permission.CAMERA" />
+
+    <uses-feature
+        android:name="android.hardware.camera"
+        android:required="true" />
+
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
     <application
         android:allowBackup="true"
@@ -10,8 +20,11 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.BonScan">
         <activity
-            android:name=".IngredientsActivity"
-            android:exported="true" />
+            android:name=".CapturesView"
+            android:exported="false" />
+        <activity
+            android:name=".Camera"
+            android:exported="false" />
         <activity
             android:name=".HomeActivity"
             android:exported="false"

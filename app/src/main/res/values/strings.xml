@@ -24,6 +24,6 @@
     <string name="hello_second_fragment">Hello second fragment. Arg: %1$s</string>
     <string name="Hello">Hello</string>
     <string name="Scan">SCAN</string>
-    <string name="plus">+</string>
-    <string name="minus">-</string>
+    <string name="Another_photo">Take another photo</string>
+    <string name="Analize">Analize Bon</string>
 </resources>

@@ -4,7 +4,6 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Gravity;
@@ -36,25 +35,39 @@ public class LoginActivity extends AppCompatActivity {
         EditText emailText = emailInputLayout.getEditText();
         String email = emailText.getText().toString();
 
+        if (!isEmailValid(email)) {
+            emailInputLayout.setError("Invalid email format");
+            Log.i("Messages", emailInputLayout.getError().toString());
+        } else {
+            emailInputLayout.setError(null);
+        }
+
         TextInputLayout passwordInputLayout = findViewById(R.id.passwordInput);
         String password = String.valueOf(passwordInputLayout.getEditText().getText());
 
-        mAuth.signInWithEmailAndPassword(email,password)
-                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
-                    @Override
-                    public void onComplete(@NonNull Task<AuthResult> task) {
-                        if (task.isSuccessful()) {
-                            Toast successfullToast = Toast.makeText(getApplicationContext(), "Login successfull", Toast.LENGTH_SHORT);
-                            successfullToast.show();
-                            FirebaseUser user = mAuth.getCurrentUser();
-                            //goToUserProfile(user);
-                            goToHome(user);
-                        } else {
-                            Log.w("singInUser:failure", task.getException());
-                            Toast failToast = Toast.makeText(getApplicationContext(), "Login failed", Toast.LENGTH_SHORT);
-                            failToast.show();
-                        }
+        if (password.length() < 6) {
+            passwordInputLayout.setError("Password is too short");
+        } else {
+            passwordInputLayout.setError(null);
+        }
 
+        signIn(email, password);
+
+    }
+
+    private void signIn(String email, String password) {
+
+        mAuth.signInWithEmailAndPassword(email, password)
+                .addOnCompleteListener(this, task -> {
+                    if (task.isSuccessful()) {
+                        Toast successfullToast = Toast.makeText(getApplicationContext(), "Login successfull", Toast.LENGTH_SHORT);
+                        successfullToast.show();
+                        FirebaseUser user = mAuth.getCurrentUser();
+                        goToHome(user);
+                    } else {
+                        Log.w("singInUser:failure", task.getException());
+                        Toast failToast = Toast.makeText(getApplicationContext(), "Authentication failed", Toast.LENGTH_SHORT);
+                        failToast.show();
                     }
                 });
     }
