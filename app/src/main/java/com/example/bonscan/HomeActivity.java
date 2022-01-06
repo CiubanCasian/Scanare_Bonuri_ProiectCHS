@@ -11,6 +11,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
@@ -28,7 +29,7 @@ public class HomeActivity extends AppCompatActivity {
     private FirebaseUser user;
     private FirebaseStorage storage;
     private ImageView profileImage;
-
+    private TextView skip;
     private Button scanButton;
 
     @Override
@@ -39,6 +40,7 @@ public class HomeActivity extends AppCompatActivity {
         user = FirebaseAuth.getInstance().getCurrentUser();
         storage = FirebaseStorage.getInstance();
         profileImage = findViewById(R.id.ProfileImage);
+        skip = findViewById(R.id.Ingredients);
     }
 
     @Override
@@ -87,4 +89,8 @@ public class HomeActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
+    public void onClickIngredients(View v) {
+        Intent intent = new Intent(this, IngredientsActivity.class);
+        startActivity(intent);
+    }
 }

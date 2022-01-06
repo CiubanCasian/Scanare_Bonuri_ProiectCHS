@@ -23,6 +23,9 @@
             android:name=".RecipiesActivity"
             android:exported="true" />
         <activity
+            android:name=".IngredientsActivity"
+            android:exported="true" />
+        <activity
             android:name=".CapturesView"
             android:exported="false" />
         <activity
