@@ -58,9 +58,18 @@ public class IngredientsActivity extends AppCompatActivity {
         Next.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                getLinks();
+
+                //doGoogleSearch();
+                getLinksToRecipiesAct();
             }
         });
+    }
+
+    private void getLinksToRecipiesAct() {
+        Intent intent = new Intent(this,RecipiesActivity.class);
+        // TODO: 1/8/2022 Get all the recipes containing the WantedIngredients and with links from the database 
+        intent.putExtra("RecipesURLs",WantedIngredients);
+        startActivity(intent);
     }
 
     private void addNewIngredient(String text) {
@@ -96,7 +105,7 @@ public class IngredientsActivity extends AppCompatActivity {
         }
     }
 
-    private void getLinks(){
+    private void doGoogleSearch(){
         //Do a google search with the words: reteta + (WantedIngredients[0] or WantedIngredients[1] or WantedIngredients[2] ... or (WantedIngredients[0] and WantedIngredients[1 and ...]))
         String regex = "(reteta) (";
         String aux = "(";
