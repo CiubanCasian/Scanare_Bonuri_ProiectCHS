@@ -2,11 +2,13 @@ package com.example.bonscan;
 
 
 import androidx.annotation.IdRes;
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.SearchManager;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.Button;
@@ -14,6 +16,16 @@ import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.Toast;
+
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -28,11 +40,14 @@ public class IngredientsActivity extends AppCompatActivity {
     private LinearLayout Layout;
     private ArrayList<String> WantedIngredients = new ArrayList<String>();
     private EditText Name;
+    private DatabaseReference mDatabase;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_ingredients);
+
+        //FirebaseAuth mAuth = FirebaseAuth.getInstance();
 
         Layout = findViewById(R.id.Layout);
         for(String i : Ingredients){
@@ -66,10 +81,35 @@ public class IngredientsActivity extends AppCompatActivity {
     }
 
     private void getLinksToRecipiesAct() {
-        Intent intent = new Intent(this,RecipiesActivity.class);
-        // TODO: 1/8/2022 Get all the recipes containing the WantedIngredients and with links from the database 
-        intent.putExtra("RecipesURLs",WantedIngredients);
-        startActivity(intent);
+        final ArrayList<String> RecipesList = new ArrayList<String>();
+        final ArrayList<String> RecipesNameList = new ArrayList<String>();
+        mDatabase = FirebaseDatabase.getInstance().getReference();
+        mDatabase.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                for (DataSnapshot dataSnap : snapshot.getChildren()){
+                    if(dataSnap.child("source").getValue().toString().contains("http")){
+                        for (String i : WantedIngredients){
+                            for(DataSnapshot j : dataSnap.child("ingredients").getChildren()){
+                                if(j.getValue().toString().contains(i)){
+                                    RecipesList.add(String.valueOf(dataSnap.child("source").getValue()));
+                                    RecipesNameList.add(String.valueOf(dataSnap.child("name").getValue()));
+                                }
+                            }
+                        }
+                    }
+                }
+                Intent intent = new Intent(IngredientsActivity.this,RecipiesActivity.class);
+                intent.putExtra("RecipesURLs",RecipesList);
+                intent.putExtra("RecipesNames",RecipesNameList);
+                startActivity(intent);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
     }
 
     private void addNewIngredient(String text) {
