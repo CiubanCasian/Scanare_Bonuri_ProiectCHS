@@ -11,7 +11,6 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
@@ -20,6 +19,7 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.storage.FirebaseStorage;
+
 import android.provider.MediaStore;
 import android.view.View;
 import android.widget.Button;
@@ -29,7 +29,7 @@ public class HomeActivity extends AppCompatActivity {
     private FirebaseUser user;
     private FirebaseStorage storage;
     private ImageView profileImage;
-    private TextView skip;
+
     private Button scanButton;
 
     @Override
@@ -40,17 +40,16 @@ public class HomeActivity extends AppCompatActivity {
         user = FirebaseAuth.getInstance().getCurrentUser();
         storage = FirebaseStorage.getInstance();
         profileImage = findViewById(R.id.ProfileImage);
-        skip = findViewById(R.id.Ingredients);
     }
 
     @Override
-    protected void onResume () {
+    protected void onResume() {
 
         super.onResume();
         findPhoto();
     }
 
-    private void findPhoto(){
+    private void findPhoto() {
         if (user != null) {
             // User is signed in
             storage.getReference(user.getUid() + "/Images/ProfilePicture/profile_picture.png").getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
@@ -65,7 +64,7 @@ public class HomeActivity extends AppCompatActivity {
                 @Override
                 public void onFailure(@NonNull Exception exception) {
                     // Handle any errors
-                    Log.w("PhotoUrl","NO Photo!");
+                    Log.w("PhotoUrl", "NO Photo!");
                     profileImage.setImageDrawable(getResources().getDrawable(R.drawable.user_profile));
                 }
             });
@@ -89,8 +88,8 @@ public class HomeActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
-    public void onClickIngredients(View v) {
-        Intent intent = new Intent(this, IngredientsActivity.class);
-        startActivity(intent);
+    @Override
+    public void onBackPressed() {
+        //Disable back button
     }
 }

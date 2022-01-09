@@ -9,6 +9,7 @@
     tools:context=".CapturesView">
 
     <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/constraintLayout2"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_marginStart="16dp"
@@ -20,33 +21,26 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
-
-        <ScrollView
+        <GridView
+            android:id="@+id/galleryGridView"
             android:layout_width="0dp"
-            android:layout_height="677dp"
-            android:layout_marginStart="1dp"
-            android:layout_marginTop="1dp"
-            android:layout_marginEnd="1dp"
-            android:layout_marginBottom="1dp"
-            app:layout_constraintBottom_toBottomOf="parent"
+            android:layout_height="wrap_content"
+            android:columnWidth="350dp"
+            android:gravity="center"
+            android:horizontalSpacing="5dp"
+            android:minHeight="100dp"
+            android:numColumns="1"
+            android:padding="2dp"
+            android:stretchMode="columnWidth"
+            android:verticalSpacing="5dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
+            app:layout_constraintTop_toTopOf="parent" />
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical" >
-
-                <ListView
-                    android:id="@+id/photos_view"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent" />
-            </LinearLayout>
-        </ScrollView>
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <LinearLayout
+        android:id="@+id/linearLayout3"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
@@ -72,8 +66,8 @@
             android:layout_height="100dp"
             android:layout_marginTop="10dp"
             android:clickable="true"
-            android:onClick="onClickAnalize"
-            android:text="@string/Analize"
+            android:onClick="onClickAnalyze"
+            android:text="@string/Analyze"
             android:textColor="@color/white"
             android:textSize="17sp"
             app:cornerRadius="30dp" />
