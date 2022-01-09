@@ -1,5 +1,11 @@
 package com.example.bonscan.analyzer;
 
+import android.graphics.Point;
+import android.graphics.Rect;
+import android.util.Log;
+
+import com.google.mlkit.vision.text.Text;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 
@@ -23,14 +29,33 @@ public class Analyzer {
 
     }
 
-    @Override
-    public String toString() {
-        return "Analyzer{" +
-                "dbIngredients=" + dbIngredients +
-                '}';
-    }
+    public ArrayList<String> analyzeText(Text text) {
+        ArrayList<String> foundIngredients = new ArrayList<>();
+        String resultText = text.getText();
+        Log.i("ResultText", resultText);
+        for (Text.TextBlock block : text.getTextBlocks()) {
+            String blockText = block.getText();
+            //Log.i("ResultBlockText", blockText);
+            Point[] blockCornerPoints = block.getCornerPoints();
+            Rect blockFrame = block.getBoundingBox();
+            for (Text.Line line : block.getLines()) {
+                String lineText = line.getText();
+                //Log.i("ResultLineText", lineText);
+                Point[] lineCornerPoints = line.getCornerPoints();
+                Rect lineFrame = line.getBoundingBox();
+                for (Text.Element element : line.getElements()) {
+                    String elementText = element.getText().toUpperCase();
+                    if (dbIngredients.contains(elementText)) {
+                        foundIngredients.add(elementText.toLowerCase());
+                    }
+                    Log.i("ResultElementText", elementText);
+                    Point[] elementCornerPoints = element.getCornerPoints();
+                    Rect elementFrame = element.getBoundingBox();
+                }
+            }
+        }
 
-    public void analyzeText() {
-
+        Log.i("INGREDIENTS", foundIngredients.toString());
+        return foundIngredients;
     }
 }
