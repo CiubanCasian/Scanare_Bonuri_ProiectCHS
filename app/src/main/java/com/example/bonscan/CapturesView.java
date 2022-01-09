@@ -4,8 +4,6 @@ import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.Point;
-import android.graphics.Rect;
 import android.os.Bundle;
 import android.util.Base64;
 import android.util.Log;
@@ -71,10 +69,11 @@ public class CapturesView extends AppCompatActivity {
         String ingredients = extractIngredients();
         Log.i("INGREDIENTS", ingredients);
         Analyzer analyzer = new Analyzer(ingredients);
-        //analyzer.analyzeText(result_text);
         Task<Text> result =
                 recognizer.process(image)
-                        .addOnSuccessListener(this::recognizeText)
+                        .addOnSuccessListener(text -> {
+                            ArrayList<String> finalIngredients = analyzer.analyzeText(text);
+                        })
                         .addOnFailureListener(
                                 e -> {
                                     // Task failed with an exception
@@ -95,30 +94,6 @@ public class CapturesView extends AppCompatActivity {
             e.printStackTrace();
         }
         return ingredients;
-    }
-
-    private void recognizeText(Text result) {
-
-        String resultText = result.getText();
-        Log.i("ResultText", resultText);
-        for (Text.TextBlock block : result.getTextBlocks()) {
-            String blockText = block.getText();
-            Log.i("ResultBlockText", blockText);
-            Point[] blockCornerPoints = block.getCornerPoints();
-            Rect blockFrame = block.getBoundingBox();
-            for (Text.Line line : block.getLines()) {
-                String lineText = line.getText();
-                Log.i("ResultLineText", lineText);
-                Point[] lineCornerPoints = line.getCornerPoints();
-                Rect lineFrame = line.getBoundingBox();
-                for (Text.Element element : line.getElements()) {
-                    String elementText = element.getText();
-                    Log.i("ResultElementText", elementText);
-                    Point[] elementCornerPoints = element.getCornerPoints();
-                    Rect elementFrame = element.getBoundingBox();
-                }
-            }
-        }
     }
 
     private Bitmap getImageFromCamera() {
