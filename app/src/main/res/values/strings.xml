@@ -26,4 +26,7 @@
     <string name="Scan">SCAN</string>
     <string name="Another_photo">Take another photo</string>
     <string name="Analyze">Analyze Bon</string>
+    <string name="plus">+</string>
+    <string name="finish">Finish</string>
+    <string name="skip_the_scan_and_add_your_ingredients">Skip the scan and add your ingredients</string>
 </resources>

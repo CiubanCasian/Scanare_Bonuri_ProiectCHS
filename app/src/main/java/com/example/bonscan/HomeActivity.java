@@ -92,4 +92,8 @@ public class HomeActivity extends AppCompatActivity {
     public void onBackPressed() {
         //Disable back button
     }
+    public void onClickIngredients(View v) {
+        Intent intent = new Intent(this, IngredientsActivity.class);
+        startActivity(intent);
+    }
 }
