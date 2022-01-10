@@ -73,6 +73,9 @@ public class CapturesView extends AppCompatActivity {
                 recognizer.process(image)
                         .addOnSuccessListener(text -> {
                             ArrayList<String> finalIngredients = analyzer.analyzeText(text);
+                            Intent intent = new Intent(this, IngredientsActivity.class);
+                            intent.putExtra("ingredients",finalIngredients);
+                            startActivity(intent);
                         })
                         .addOnFailureListener(
                                 e -> {

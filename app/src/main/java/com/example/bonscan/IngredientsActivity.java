@@ -30,11 +30,12 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.Locale;
 import java.util.regex.Pattern;
 
 public class IngredientsActivity extends AppCompatActivity {
 
-    private String[] Ingredients = {};
+    private ArrayList<String> Ingredients = new ArrayList<String>();
     private Button Next;
     private Button Plus;
     private LinearLayout Layout;
@@ -49,6 +50,11 @@ public class IngredientsActivity extends AppCompatActivity {
 
         //FirebaseAuth mAuth = FirebaseAuth.getInstance();
 
+        Bundle b = getIntent().getExtras();
+        if(b != null){
+            Ingredients = b.getStringArrayList("ingredients");
+        }
+        Log.i("Ingredients:", String.valueOf(Ingredients));
         Layout = findViewById(R.id.Layout);
         for(String i : Ingredients){
             addNewIngredient(i);
@@ -122,14 +128,14 @@ public class IngredientsActivity extends AppCompatActivity {
         cb.setText(text);
         cb.setChecked(true);
         cb.setTextSize(24);
-        addIngredientToList(text);
+        addIngredientToList(text.toLowerCase(Locale.ROOT));
         cb.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if(cb.isChecked())
-                    addIngredientToList(text);
+                    addIngredientToList(text.toLowerCase(Locale.ROOT));
                 else
-                    deleteIngredientFromList(text);
+                    deleteIngredientFromList(text.toLowerCase(Locale.ROOT));
             }
         });
         Layout.addView(cb);
